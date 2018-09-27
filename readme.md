@@ -6,12 +6,6 @@ vue-cli 3.0 对mpvue的支持
 npm i -g vue-cli
 ```
 ```js
-git clone https://github.com/aymonYU/mpvue-demo-for-vue-cli.git
-```
-```js
-cd mpvue-demo-for-vue-cli && npm i
-```
-```js
 vue add vue-cli-plugin-mpvue
 ```
 ```js
@@ -34,5 +28,4 @@ script:{
     path:'pages/a.vue'
 }]
 ```
-
 

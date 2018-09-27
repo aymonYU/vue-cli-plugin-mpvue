@@ -1,8 +1,8 @@
 module.exports = (api, options) => {
   const pkg = {
     scripts: {
-      'mpvue:dev': 'vue-cli-service mpvue',
-      'mpvue:build': "vue-cli-service mpvue  --mode 'production'"
+      'mpvue:dev': "vue-cli-service mpvue './src/mpvue.js'",
+      'mpvue:build': "vue-cli-service mpvue './src/mpvue.js'  --mode 'production'"
     },
     dependencies: {
       'mpvue': '^1.0.13'
@@ -12,4 +12,5 @@ module.exports = (api, options) => {
     }
   }
   api.extendPackage(pkg)
+  api.render('./template')
 }
