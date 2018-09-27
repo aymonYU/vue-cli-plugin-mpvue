@@ -3,7 +3,7 @@ vue-cli 3.0 对mpvue的支持
 
 ## 使用
 ```
-npm i -g vue-cli
+npm i -g @vue/cli
 ```
 ```js
 vue add vue-cli-plugin-mpvue
