@@ -1,5 +1,5 @@
 ## 功能
-vue-cli 3.0 对mpvue的支持
+mpvue plugin for vue-cli 3.0
 
 ## 使用
 ```
