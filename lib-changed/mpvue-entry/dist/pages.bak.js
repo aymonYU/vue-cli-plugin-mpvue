@@ -1,0 +1,1 @@
+[{"path":"pages/index"},{"path":"pages/test/index"}]

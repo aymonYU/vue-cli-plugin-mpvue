@@ -1,0 +1,61 @@
+{
+  "_from": "mpvue-entry@^0.3.6",
+  "_id": "mpvue-entry@0.3.7",
+  "_inBundle": false,
+  "_integrity": "sha512-5xoE1qV3KLJE7AM+34hAfd+K6D8Ue1NcQj+3KHxgoXuizJXcxzowOZQkbMSL21UJEKKSVKZ16cWR+FDksYZOIg==",
+  "_location": "/mpvue-entry",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "range",
+    "registry": true,
+    "raw": "mpvue-entry@^0.3.6",
+    "name": "mpvue-entry",
+    "escapedName": "mpvue-entry",
+    "rawSpec": "^0.3.6",
+    "saveSpec": null,
+    "fetchSpec": "^0.3.6"
+  },
+  "_requiredBy": [
+    "#DEV:/"
+  ],
+  "_resolved": "https://registry.npmjs.org/mpvue-entry/-/mpvue-entry-0.3.7.tgz",
+  "_shasum": "a13023fb4fa3d430b79a0ebdc9dd2bb534570aac",
+  "_spec": "mpvue-entry@^0.3.6",
+  "_where": "/Users/aymonyu/tencent/my-module/vue-cli/packages/@vue/cli-plugin-mpvue",
+  "author": {
+    "name": "F-loat",
+    "email": "chaimaoyuan@foxmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/F-loat/mpvue-entry/issues"
+  },
+  "bundleDependencies": false,
+  "deprecated": false,
+  "description": "通过配置文件自动生成各页面对应的 main.js 文件，并返回 entry",
+  "devDependencies": {
+    "eslint": "^4.19.1",
+    "eslint-config-airbnb-base": "^12.1.0",
+    "eslint-friendly-formatter": "^4.0.1"
+  },
+  "directories": {
+    "example": "examples"
+  },
+  "homepage": "https://github.com/F-loat/mpvue-entry#readme",
+  "keywords": [
+    "mpvue",
+    "entry",
+    "webpack"
+  ],
+  "license": "MIT",
+  "main": "src/index.js",
+  "name": "mpvue-entry",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/F-loat/mpvue-entry.git"
+  },
+  "scripts": {
+    "lint": "eslint --format node_modules/eslint-friendly-formatter --ext .js src",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "0.3.7"
+}
