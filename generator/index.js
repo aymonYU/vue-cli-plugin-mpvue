@@ -6,7 +6,7 @@ module.exports = (api, options) => {
         "vue-cli-service mpvue './src/mpvue.js'  --mode 'production'"
     },
     dependencies: {
-      mpvue: "^2.0.0"
+      mpvue: "^2.0.6"
     },
     devDependencies: {
       "vue-cli-plugin-mpvue": "^1.0.12"

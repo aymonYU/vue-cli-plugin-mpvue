@@ -1,12 +1,13 @@
 var path = require("path");
 var MpvuePlugin = require("webpack-mpvue-asset-plugin");
-var genEntry = require("../lib-changed/mpvue-entry");
 var utils = require("./utils");
 var config = require("../config");
 var vueLoaderConfig = require("./vue-loader.conf");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
+var glob = require('glob')
+var relative = require('relative')
 var webpack = require("webpack");
 var MpvueVendorPlugin = require("webpack-mpvue-vendor-plugin");
 
@@ -14,11 +15,25 @@ function resolve(dir) {
   return path.join(process.cwd(), dir);
 }
 
+function getEntry (rootSrc) {
+  var map = {};
+  glob.sync(rootSrc + '/pages/**/main.js')
+  .forEach(file => {
+    var key = relative(rootSrc, file).replace('.js', '');
+    map[key] = file;
+  })
+   return map;
+}
+
+
 module.exports = function(options) {
   const { entry } = options;
-  console.log(genEntry("./src/pages.js", entry), "sedd");
+
+  const appEntry = { app: resolve(entry) }
+  const pagesEntry = getEntry(resolve('./src'), 'pages/**/main.js')
+
   return {
-    entry: genEntry("./src/pages.js", entry),
+    entry: Object.assign({}, appEntry, pagesEntry),
     target: require("mpvue-webpack-target"),
     /* changed*/
     resolveLoader: {
@@ -30,8 +45,8 @@ module.exports = function(options) {
     /* changed*/
     output: {
       path: config.build.assetsRoot,
-      filename: utils.assetsPath("js/[name].js"),
-      chunkFilename: utils.assetsPath("js/[id].js"),
+      jsonpFunction: 'webpackJsonpMpvue',
+      filename: '[name].js',
       publicPath:
         process.env.NODE_ENV === "production"
           ? config.build.assetsPublicPath
@@ -99,7 +114,7 @@ module.exports = function(options) {
       /* changed*/
       new ExtractTextPlugin({
         // filename: utils.assetsPath('css/[name].[contenthash].css')
-        filename: utils.assetsPath("css/[name].wxss")
+        filename: '[name].wxss'
       }),
       new MpvuePlugin(),
       /* changed*/
@@ -110,6 +125,12 @@ module.exports = function(options) {
           ignore: [".*"]
         }
       ]),
+      new CopyWebpackPlugin([{
+        from: '**/*.json',
+        to: ''
+      }], {
+        context: "src/"
+      }),
       /* changed*/
       // Compress extracted CSS. We are using this plugin so that possible
       // duplicated CSS from different components can be deduped.
@@ -120,21 +141,19 @@ module.exports = function(options) {
       }),
 
       new webpack.optimize.CommonsChunkPlugin({
-        name: "vendor",
-        minChunks: function(module, count) {
+        name: 'common/vendor',
+        minChunks: function (module, count) {
           // any required modules inside node_modules are extracted to vendor
           return (
-            (module.resource &&
-              /\.js$/.test(module.resource) &&
-              module.resource.indexOf("node_modules") >= 0) ||
-            count > 1
-          );
+            module.resource &&
+            /\.js$/.test(module.resource) &&
+            module.resource.indexOf('node_modules') >= 0
+          ) || count > 1
         }
       }),
-
       new webpack.optimize.CommonsChunkPlugin({
-        name: "manifest",
-        chunks: ["vendor"]
+        name: 'common/manifest',
+        chunks: ['common/vendor']
       }),
 
       // http://vuejs.github.io/vue-loader/en/workflow/production.html
