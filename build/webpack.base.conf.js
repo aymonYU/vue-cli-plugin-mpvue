@@ -2,12 +2,11 @@ var path = require("path");
 var MpvuePlugin = require("webpack-mpvue-asset-plugin");
 var utils = require("./utils");
 var config = require("../config");
+const {getEntry} = require('../lib/mpvue-entry') 
 var vueLoaderConfig = require("./vue-loader.conf");
 var CopyWebpackPlugin = require("copy-webpack-plugin");
 var ExtractTextPlugin = require("extract-text-webpack-plugin");
 var OptimizeCSSPlugin = require("optimize-css-assets-webpack-plugin");
-var glob = require('glob')
-var relative = require('relative')
 var webpack = require("webpack");
 var MpvueVendorPlugin = require("webpack-mpvue-vendor-plugin");
 
@@ -15,22 +14,13 @@ function resolve(dir) {
   return path.join(process.cwd(), dir);
 }
 
-function getEntry (rootSrc) {
-  var map = {};
-  glob.sync(rootSrc + '/pages/**/main.js')
-  .forEach(file => {
-    var key = relative(rootSrc, file).replace('.js', '');
-    map[key] = file;
-  })
-   return map;
-}
-
 
 module.exports = function(options) {
   const { entry } = options;
 
   const appEntry = { app: resolve(entry) }
-  const pagesEntry = getEntry(resolve('./src'), 'pages/**/main.js')
+
+  const pagesEntry = getEntry() 
 
   return {
     entry: Object.assign({}, appEntry, pagesEntry),
