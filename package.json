@@ -1,6 +1,6 @@
 {
   "name": "vue-cli-plugin-mpvue",
-  "version": "1.0.16",
+  "version": "1.0.18",
   "description": "",
   "main": "index.js",
   "scripts": {
