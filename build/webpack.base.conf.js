@@ -42,19 +42,6 @@ module.exports = function(options) {
           ? config.build.assetsPublicPath
           : config.dev.assetsPublicPath
     },
-    resolve: {
-      extensions: [".js", ".vue", ".json"],
-      alias: {
-        vue: "mpvue",
-        "@": resolve("src")
-      },
-      /* changed*/
-      modules: [
-        path.resolve(__dirname, "../node_modules"),
-        path.resolve(process.cwd(), "node_modules")
-      ],
-      symlinks: false
-    },
 
     module: {
       rules: [
@@ -74,30 +61,6 @@ module.exports = function(options) {
             }
           ]
         },
-        {
-          test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
-          loader: "url-loader",
-          options: {
-            limit: 10000,
-            name: utils.assetsPath("img/[name].[ext]")
-          }
-        },
-        {
-          test: /\.(mp4|webm|ogg|mp3|wav|flac|aac)(\?.*)?$/,
-          loader: "url-loader",
-          options: {
-            limit: 10000,
-            name: utils.assetsPath("media/[name]].[ext]")
-          }
-        },
-        {
-          test: /\.(woff2?|eot|ttf|otf)(\?.*)?$/,
-          loader: "url-loader",
-          options: {
-            limit: 10000,
-            name: utils.assetsPath("fonts/[name].[ext]")
-          }
-        }
       ]
     },
     plugins: [
@@ -148,8 +111,6 @@ module.exports = function(options) {
 
       // http://vuejs.github.io/vue-loader/en/workflow/production.html
       new webpack.DefinePlugin({
-        mpvue: "global.mpvue",
-        mpvuePlatform: "global.mpvuePlatform",
         NODE_ENV: JSON.stringify(process.env.NODE_ENV),
         BASE_URL: '"/"',
         PLATFORM: JSON.stringify("mpvue"),

@@ -5,6 +5,41 @@ var rm = require('rimraf')
 
 module.exports = (api, options) => {
   // if (options.pluginOptions.platform === 'mpvue')
+  api.chainWebpack(async (configChain, options = {}) => {
+    configChain.resolve.alias.delete('vue$')
+    configChain.resolve.alias.set('vue', 'mpvue')
+
+    // 删除无用的配置
+    configChain.module.rules.delete('vue')
+    // configChain.module.rules.delete('images')
+    // configChain.module.rules.delete('svg')
+    // configChain.module.rules.delete('media')
+    // configChain.module.rules.delete('fonts')
+    configChain.module.rules.delete('pug')
+    configChain.module.rules.delete('css')
+    configChain.module.rules.delete('postcss')
+    configChain.module.rules.delete('scss')
+    configChain.module.rules.delete('sass')
+    configChain.module.rules.delete('less')
+    configChain.module.rules.delete('stylus')
+    configChain.module.rules.delete('js')
+    configChain.module.rules.delete('eslint')
+    configChain.plugins.delete('vue-loader')
+    configChain.plugins.delete('define')
+    configChain.plugins.delete('case-sensitive-paths')
+    configChain.plugins.delete('hmr')
+    configChain.plugins.delete('progress')
+    configChain.plugins.delete('html')
+    configChain.plugins.delete('preload')
+    configChain.plugins.delete('prefetch')
+    configChain.plugins.delete('friendly-errors')
+
+    // production
+    configChain.plugins.delete('extract-css')
+    configChain.plugins.delete('optimize-css')
+    configChain.plugins.delete('hash-module-ids')
+    configChain.plugins.delete('named-chunks')
+})
   api.registerCommand(
     'mpvue',
     {
@@ -19,20 +54,6 @@ module.exports = (api, options) => {
         process.env.NODE_ENV = 'production'
       }
       const isProduction = process.env.NODE_ENV === 'production'
-      let { entry } = api.resolveWebpackConfig()
-      const { resolve: { alias }} = api.resolveWebpackConfig()
-
-      // 支持entry传入参数
-      if (args._[0]) {
-        entry = args._[0]
-      }
-
-      // 倒入想要传入的参数
-      entry = assetEntry(entry)
-      const options = {
-        entry
-      }
-      console.log(`using the entry file of ${entry}`)
 
       let webpackConfig = {}
 
@@ -40,16 +61,22 @@ module.exports = (api, options) => {
         await rm(config.build.assetsRoot, err => {
           if (err) throw err
         })
-        webpackConfig = require('./build/webpack.prod.conf.js')(options)
+        webpackConfig = require('./build/webpack.prod.conf.js')({entry: args._[0]})
       } else {
-        webpackConfig = require('./build/webpack.dev.conf.js')(options)
+        webpackConfig = require('./build/webpack.dev.conf.js')({entry: args._[0]})
       }
-
+      const vueCliConfig = api.resolveWebpackConfig()
+      delete vueCliConfig['optimization']
+      delete vueCliConfig['entry']
+      delete vueCliConfig['mode']
+      delete vueCliConfig['output']
+      delete vueCliConfig['devtool']
+      // delete vueCliConfig['resolveLoader']
+      
       // 合并从配置中读取的配置结果
-      webpackConfig = merge(webpackConfig, { resolve: {
-        alias
-      }})
-
+      webpackConfig =  merge.smart(webpackConfig,vueCliConfig)
+ 
+      // 由于mpvue 还是用webpack3，这里只能这样处理
       const compile = webpack(webpackConfig, function (err, stats) {
         if (err) throw err
         process.stdout.write(stats.toString({
@@ -67,32 +94,5 @@ module.exports = (api, options) => {
 
   )
 
-  // api.chainWebpack(async (configChain, options = {}) => {
+}
 
-  // })
-}
-// mpvue entry 参数传入校验
-function assetEntry (entry) {
-  if (Array.isArray(entry)) {
-    if (entry.length > 1) {
-      console.error('the entry of mpvue do not surport multiple entries ')
-      process.exit(1)
-    }
-    return entry[0]
-  } else if (typeof entry === 'object') {
-    if (Object.keys(entry).length > 1) {
-      console.error('the entry of mpvue do not surport multiple entries ')
-      process.exit(1)
-    }
-    const entryFirstKeyValue = entry[Object.keys(entry)[0]]
-    if (typeof entryFirstKeyValue === 'string') {
-      return entryFirstKeyValue
-    } else {
-      return assetEntry(entryFirstKeyValue)
-    }
-  } else if (typeof entry === 'string') {
-    return entry
-  } else {
-    return './src/main.js'
-  }
-}

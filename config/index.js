@@ -27,7 +27,7 @@ var fileExtConfig = {
   }
 };
 
-var fileExt = fileExtConfig[process.env.PLATFORM||'wx'];
+var fileExt = fileExtConfig[process.env.PLATFORM||'wx']||fileExtConfig['wx'];
 module.exports = {
   build: {
     env: require("./prod.env"),

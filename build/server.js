@@ -4,7 +4,6 @@ var config = require("../config");
 var path = require("path");
 var express = require("express");
 var proxyMiddleware = require("http-proxy-middleware");
-process.env.PLATFORM = "wx";
 
 module.exports = function(compiler, webpackConfig) {
   // default port where dev server listens for incoming traffic
