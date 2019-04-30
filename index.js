@@ -24,6 +24,7 @@ module.exports = (api, options) => {
     configChain.module.rules.delete('stylus')
     configChain.module.rules.delete('js')
     configChain.module.rules.delete('eslint')
+    configChain.plugins.delete('copy')
     configChain.plugins.delete('vue-loader')
     configChain.plugins.delete('define')
     configChain.plugins.delete('case-sensitive-paths')

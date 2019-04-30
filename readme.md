@@ -17,8 +17,8 @@ npm run mpvue:dev
 2. 支持命令行中传入入口,例如：
 ```
 script:{
-    "mpvue:dev": "vue-cli-service mpvue './src/entry/mpvue.js'",
-    "mpvue:build": "vue-cli-service mpvue './src/entry/mpvue.js' --mode 'production'"
+    "mpvue:dev": "vue-cli-service mpvue './src/mpvue.js'",
+    "mpvue:build": "vue-cli-service mpvue './src/mpvue.js' --mode 'production'"
 }
 ```
 3. mpvue 官方中的demo中存在`src/pages.js`，此项目允许不存在此文件
